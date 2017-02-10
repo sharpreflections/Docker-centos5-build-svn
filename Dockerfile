@@ -31,7 +31,7 @@ RUN svn co  http://svn.apache.org/repos/asf/apr/apr-util/branches/1.3.x  apr-uti
 
 # build svn 1.7
 WORKDIR /tmp/src
-RUN wget http://apache.mirror.iphh.net/subversion/subversion-1.7.22.tar.gz  &&  \
+RUN wget http://archive.apache.org/dist/subversion/subversion-1.7.22.tar.gz &&  \
     tar -zxvf subversion-1.7.22.tar.gz && \
     mkdir /tmp/src/subversion-1.7.22/sqlite-amalgamation && \
     cp sqlite-autoconf-3150100/sqlite3.c /tmp/src/subversion-1.7.22/sqlite-amalgamation/    && \
@@ -43,7 +43,7 @@ RUN wget http://apache.mirror.iphh.net/subversion/subversion-1.7.22.tar.gz  &&  
 
 # build svn 1.8
 WORKDIR /tmp/src
-RUN wget http://apache.mirror.iphh.net/subversion/subversion-1.8.16.tar.gz  && \
+RUN wget http://archive.apache.org/dist/subversion/subversion-1.8.16.tar.gz && \
     tar -zxvf subversion-1.8.16.tar.gz && \
     cp -R sqlite-autoconf-3150100 subversion-1.8.16/sqlite-amalgamation && \
     cd subversion-1.8.16 && \
