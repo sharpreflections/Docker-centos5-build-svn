@@ -1,6 +1,8 @@
 FROM aneundorf/centos5-build-base
 MAINTAINER alexander.neundorf@sharpreflections.com
 
+# This container extends the build-base container by compiling a few
+# versions of svn and git
 
 # build svn 1.7.22
 RUN mkdir -p /tmp/src/
@@ -29,6 +31,25 @@ RUN svn co  http://svn.apache.org/repos/asf/apr/apr-util/branches/1.3.x  apr-uti
     make install
 
 
+# install scons, needed to build Serf
+WORKDIR /opt
+RUN mkdir -p /tmp/dl && \
+    mkdir -p /opt/scons-2.3 && \
+    wget -P /tmp/dl http://prdownloads.sourceforge.net/scons/scons-local-2.3.0.tar.gz && \
+    cd scons-2.3 && \
+    tar -zxvf /tmp/dl/scons-local-2.3.0.tar.gz && \
+    rm /tmp/dl/*
+
+
+# get Apache Serf (needed for https in svn)
+WORKDIR /tmp/src
+RUN wget --no-check-certificate https://www.apache.org/dist/serf/serf-1.3.9.tar.bz2 && \
+    tar -jxvf serf-1.3.9.tar.bz2 && \
+    cd serf-1.3.9 && \
+    /opt/scons-2.3/scons.py PREFIX=/opt/serf-1.3.9 APR=/opt/apr-1.3 APU=/opt/apr-1.3 && \
+    /opt/scons-2.3/scons.py install
+
+
 # build svn 1.7
 WORKDIR /tmp/src
 RUN wget http://archive.apache.org/dist/subversion/subversion-1.7.22.tar.gz &&  \
@@ -47,9 +68,13 @@ RUN wget http://archive.apache.org/dist/subversion/subversion-1.8.16.tar.gz && \
     tar -zxvf subversion-1.8.16.tar.gz && \
     cp -R sqlite-autoconf-3150100 subversion-1.8.16/sqlite-amalgamation && \
     cd subversion-1.8.16 && \
-    ./configure --prefix=/opt/svn-1.8 --without-berkeley-db --without-apxs --without-swig --with-ssl --with-apr=/opt/apr-1.3/ --with-apr-util=/opt/apr-1.3/    && \
+    ./configure --prefix=/opt/svn-1.8 --without-berkeley-db --without-apxs --without-swig --with-ssl --with-apr=/opt/apr-1.3/ --with-apr-util=/opt/apr-1.3/  --with-serf=/opt/serf-1.3.9/  && \
     nice make -j4 && \
-    make install
+    make install && \
+    mv /opt/svn-1.8/bin/svn /opt/svn-1.8/bin/svn18 && \
+    echo $'#!/bin/bash \n LD_LIBRARY_PATH=$LD_LIBRARY_PATH:/opt/serf-1.3.9/lib/ /opt/svn-1.8/bin/svn18 $*' > /opt/svn-1.8/bin/svn  && \
+    chmod 755 /opt/svn-1.8/bin/svn
+
 
 # build git
 WORKDIR /tmp/src
