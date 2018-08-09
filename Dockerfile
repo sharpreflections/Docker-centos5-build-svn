@@ -43,7 +43,7 @@ RUN mkdir -p /tmp/dl && \
 
 # get Apache Serf (needed for https in svn)
 WORKDIR /tmp/src
-RUN wget --no-check-certificate https://www.apache.org/dist/serf/serf-1.3.9.tar.bz2 && \
+RUN wget http://www.apache.org/dist/serf/serf-1.3.9.tar.bz2 && \
     tar -jxvf serf-1.3.9.tar.bz2 && \
     cd serf-1.3.9 && \
     /opt/scons-2.3/scons.py PREFIX=/opt/serf-1.3.9 APR=/opt/apr-1.3 APU=/opt/apr-1.3 && \
