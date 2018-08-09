@@ -32,10 +32,11 @@ RUN svn co  http://svn.apache.org/repos/asf/apr/apr-util/branches/1.3.x  apr-uti
 
 
 # install scons, needed to build Serf
+#    wget -P /tmp/dl http://prdownloads.sourceforge.net/scons/scons-local-2.3.0.tar.gz && \
 WORKDIR /opt
 RUN mkdir -p /tmp/dl && \
     mkdir -p /opt/scons-2.3 && \
-    wget -P /tmp/dl http://prdownloads.sourceforge.net/scons/scons-local-2.3.0.tar.gz && \
+    wget -P /tmp/dl http://netcologne.dl.sourceforge.net/project/scons/scons-local/2.3.0/scons-local-2.3.0.tar.gz && \
     cd scons-2.3 && \
     tar -zxvf /tmp/dl/scons-local-2.3.0.tar.gz && \
     rm /tmp/dl/*
