@@ -1,4 +1,4 @@
-FROM aneundorf/centos5-build-base
+FROM aneundorf/centos5-build-base:old-binutils
 MAINTAINER alexander.neundorf@sharpreflections.com
 
 # This container extends the build-base container by compiling a few
