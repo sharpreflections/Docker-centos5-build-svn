@@ -58,7 +58,7 @@ RUN wget http://archive.apache.org/dist/subversion/subversion-1.7.22.tar.gz &&  
     mkdir /tmp/src/subversion-1.7.22/sqlite-amalgamation && \
     cp sqlite-autoconf-3150100/sqlite3.c /tmp/src/subversion-1.7.22/sqlite-amalgamation/    && \
     cd subversion-1.7.22 && \
-    ./configure --prefix=/opt/svn-1.7 --without-berkeley-db --without-apxs --without-swig --with-ssl  --with-apr=/opt/apr-1.3/ --with-apr-util=/opt/apr-1.3/    && \
+    ./configure --prefix=/opt/svn-1.7 --without-berkeley-db --without-apxs --without-swig --with-ssl  --with-apr=/opt/apr-1.3/ --with-apr-util=/opt/apr-1.3/ --with-serf=/opt/serf-1.3.9/ && \
     nice make -j6 && \
     make install
 
@@ -69,7 +69,7 @@ RUN wget http://archive.apache.org/dist/subversion/subversion-1.8.16.tar.gz && \
     tar -zxvf subversion-1.8.16.tar.gz && \
     cp -R sqlite-autoconf-3150100 subversion-1.8.16/sqlite-amalgamation && \
     cd subversion-1.8.16 && \
-    ./configure --prefix=/opt/svn-1.8 --without-berkeley-db --without-apxs --without-swig --with-ssl --with-apr=/opt/apr-1.3/ --with-apr-util=/opt/apr-1.3/  --with-serf=/opt/serf-1.3.9/  && \
+    ./configure --prefix=/opt/svn-1.8 --without-berkeley-db --without-apxs --without-swig --with-ssl --with-apr=/opt/apr-1.3/ --with-apr-util=/opt/apr-1.3/ --with-serf=/opt/serf-1.3.9/ && \
     nice make -j4 && \
     make install && \
     mv /opt/svn-1.8/bin/svn /opt/svn-1.8/bin/svn18 && \
