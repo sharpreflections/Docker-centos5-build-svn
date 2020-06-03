@@ -76,6 +76,8 @@ RUN wget http://archive.apache.org/dist/subversion/subversion-1.7.22.tar.gz &&  
 WORKDIR /tmp/src
 RUN wget http://archive.apache.org/dist/subversion/subversion-1.8.16.tar.gz && \
     tar -zxvf subversion-1.8.16.tar.gz && \
+    wget http://www.sqlite.org/2016/sqlite-autoconf-3150100.tar.gz && \
+    tar -zxvf sqlite-autoconf-3150100.tar.gz && \
     cp -R sqlite-autoconf-3150100 subversion-1.8.16/sqlite-amalgamation && \
     cd subversion-1.8.16 && \
     ./configure --prefix=/opt/svn-1.8 --without-berkeley-db --without-apxs --without-swig --with-apr=/opt/apr-1.3/ --with-apr-util=/opt/apr-1.3/ --with-serf=/opt/serf-1.3.9/ && \
