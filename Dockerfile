@@ -1,4 +1,4 @@
-FROM sharpreflections/centos5-build-base
+FROM aneundorf/centos5-build-base
 LABEL maintainer="alexander.neundorf@sharpreflections.com,dennis.brendel@sharpreflections.com"
 
 # This container extends the build-base container by compiling a few
