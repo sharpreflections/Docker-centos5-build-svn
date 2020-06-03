@@ -11,7 +11,7 @@ WORKDIR /tmp/src
 RUN curl -LO https://www.openssl.org/source/old/1.0.2/openssl-1.0.2u.tar.gz && \
     tar xvf openssl-1.0.2u.tar.gz && \
     cd openssl-1.0.2u && \
-    ./config --prefix=/opt/openssl-1.0.2u && \
+    ./config shared --prefix=/opt/openssl-1.0.2u && \
     make -j 4 && \
     make -j 4 install && \
     cd /tmp/src && \
