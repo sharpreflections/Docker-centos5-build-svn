@@ -21,9 +21,7 @@ RUN curl -LO https://www.openssl.org/source/old/1.0.2/openssl-1.0.2u.tar.gz && \
 # build svn 1.7.22
 # get a recent enough sqlite:
 WORKDIR /tmp/src
-RUN wget http://www.sqlite.org/2016/sqlite-autoconf-3150100.tar.gz && \
-    tar -zxvf sqlite-autoconf-3150100.tar.gz && \
-    svn co http://svn.apache.org/repos/asf/apr/apr/branches/1.3.x apr-1.3 && \
+RUN svn co http://svn.apache.org/repos/asf/apr/apr/branches/1.3.x apr-1.3 && \
     cd apr-1.3 && \
     ./buildconf && \
     ./configure --prefix=/opt/apr-1.3 --enable-shared --disable-static && \
@@ -63,6 +61,8 @@ WORKDIR /tmp/src
 RUN wget http://archive.apache.org/dist/subversion/subversion-1.7.22.tar.gz &&  \
     tar -zxvf subversion-1.7.22.tar.gz && \
     mkdir /tmp/src/subversion-1.7.22/sqlite-amalgamation && \
+    wget http://www.sqlite.org/2016/sqlite-autoconf-3150100.tar.gz && \
+    tar -zxvf sqlite-autoconf-3150100.tar.gz && \
     cp sqlite-autoconf-3150100/sqlite3.c /tmp/src/subversion-1.7.22/sqlite-amalgamation/    && \
     cd subversion-1.7.22 && \
     ./configure --prefix=/opt/svn-1.7 --without-berkeley-db --without-apxs --without-swig --with-apr=/opt/apr-1.3/ --with-apr-util=/opt/apr-1.3/ --with-serf=/opt/serf-1.3.9/ && \
