@@ -1,5 +1,5 @@
-FROM aneundorf/centos5-build-base
-MAINTAINER alexander.neundorf@sharpreflections.com
+FROM sharpreflections/centos5-build-base
+LABEL maintainer="alexander.neundorf@sharpreflections.com,dennis.brendel@sharpreflections.com"
 
 # This container extends the build-base container by compiling a few
 # versions of svn and git
