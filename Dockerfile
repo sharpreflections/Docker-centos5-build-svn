@@ -14,7 +14,7 @@ RUN curl -LO https://www.openssl.org/source/old/1.0.2/openssl-1.0.2u.tar.gz && \
     ./config --prefix=/opt/openssl-1.0.2u && \
     make -j 4 && \
     make -j 4 install && \
-    rm -rf /tmp/src
+    rm -rf /tmp/src/*
 
 
 # build svn 1.7.22
@@ -43,7 +43,7 @@ cd /opt && \
     wget -P /tmp/dl http://netcologne.dl.sourceforge.net/project/scons/scons-local/2.3.0/scons-local-2.3.0.tar.gz && \
     cd scons-2.3 && \
     tar -zxvf /tmp/dl/scons-local-2.3.0.tar.gz && \
-    rm /tmp/dl/* && rm -rf /tmp/src
+    rm /tmp/dl/* && rm -rf /tmp/src/*
 
 
 # get Apache Serf (needed for https in svn)
@@ -53,7 +53,7 @@ RUN wget http://www.apache.org/dist/serf/serf-1.3.9.tar.bz2 && \
     cd serf-1.3.9 && \
     /opt/scons-2.3/scons.py PREFIX=/opt/serf-1.3.9 APR=/opt/apr-1.3 APU=/opt/apr-1.3 OPENSSL=/opt/openssl-1.0.2u && \
     /opt/scons-2.3/scons.py install && \
-    rm -rf /tmp/src
+    rm -rf /tmp/src/*
 
 
 # build svn 1.7
@@ -66,7 +66,7 @@ RUN wget http://archive.apache.org/dist/subversion/subversion-1.7.22.tar.gz &&  
     ./configure --prefix=/opt/svn-1.7 --without-berkeley-db --without-apxs --without-swig --with-apr=/opt/apr-1.3/ --with-apr-util=/opt/apr-1.3/ --with-serf=/opt/serf-1.3.9/ && \
     nice make -j6 && \
     make install && \
-    rm -rf /tmp/src
+    rm -rf /tmp/src/*
 
 
 # build svn 1.8
@@ -81,7 +81,7 @@ RUN wget http://archive.apache.org/dist/subversion/subversion-1.8.16.tar.gz && \
     mv /opt/svn-1.8/bin/svn /opt/svn-1.8/bin/svn18 && \
     echo $'#!/bin/bash \n LD_LIBRARY_PATH=$LD_LIBRARY_PATH:/opt/serf-1.3.9/lib/ /opt/svn-1.8/bin/svn18 $*' > /opt/svn-1.8/bin/svn  && \
     chmod 755 /opt/svn-1.8/bin/svn && \
-    rm -rf /tmp/src
+    rm -rf /tmp/src/*
 
 
 # build git
@@ -93,5 +93,5 @@ RUN wget http://ftp5.gwdg.de/pub/linux/slackware/slackware-12.2/source/d/git/git
     ./configure --prefix=/opt/git  && \
     make -j4 && \
     make install && \
-    rm -rf /tmp/src
+    rm -rf /tmp/src/*
 
