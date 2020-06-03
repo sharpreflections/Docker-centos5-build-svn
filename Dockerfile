@@ -4,6 +4,19 @@ MAINTAINER alexander.neundorf@sharpreflections.com
 # This container extends the build-base container by compiling a few
 # versions of svn and git
 
+# Build a recent enough openssl, since the system openssl only supports deprecated
+# ciphers which are removed from recent systems (svn can no longer checkout)
+
+WORKDIR /tmp/src
+RUN curl -LO https://www.openssl.org/source/old/1.0.2/openssl-1.0.2u.tar.gz && \
+    tar xvf openssl-1.0.2u.tar.gz && \
+    cd openssl-1.0.2u && \
+    ./config --prefix=/opt/openssl-1.0.2u && \
+    make -j 4 && \
+    make -j 4 install && \
+    rm -rf /tmp/src
+
+
 # build svn 1.7.22
 # get a recent enough sqlite:
 WORKDIR /tmp/src
@@ -38,7 +51,7 @@ WORKDIR /tmp/src
 RUN wget http://www.apache.org/dist/serf/serf-1.3.9.tar.bz2 && \
     tar -jxvf serf-1.3.9.tar.bz2 && \
     cd serf-1.3.9 && \
-    /opt/scons-2.3/scons.py PREFIX=/opt/serf-1.3.9 APR=/opt/apr-1.3 APU=/opt/apr-1.3 && \
+    /opt/scons-2.3/scons.py PREFIX=/opt/serf-1.3.9 APR=/opt/apr-1.3 APU=/opt/apr-1.3 OPENSSL=/opt/openssl-1.0.2u && \
     /opt/scons-2.3/scons.py install && \
     rm -rf /tmp/src
 
@@ -50,7 +63,7 @@ RUN wget http://archive.apache.org/dist/subversion/subversion-1.7.22.tar.gz &&  
     mkdir /tmp/src/subversion-1.7.22/sqlite-amalgamation && \
     cp sqlite-autoconf-3150100/sqlite3.c /tmp/src/subversion-1.7.22/sqlite-amalgamation/    && \
     cd subversion-1.7.22 && \
-    ./configure --prefix=/opt/svn-1.7 --without-berkeley-db --without-apxs --without-swig --with-ssl  --with-apr=/opt/apr-1.3/ --with-apr-util=/opt/apr-1.3/ --with-serf=/opt/serf-1.3.9/ && \
+    ./configure --prefix=/opt/svn-1.7 --without-berkeley-db --without-apxs --without-swig --with-apr=/opt/apr-1.3/ --with-apr-util=/opt/apr-1.3/ --with-serf=/opt/serf-1.3.9/ && \
     nice make -j6 && \
     make install && \
     rm -rf /tmp/src
@@ -62,7 +75,7 @@ RUN wget http://archive.apache.org/dist/subversion/subversion-1.8.16.tar.gz && \
     tar -zxvf subversion-1.8.16.tar.gz && \
     cp -R sqlite-autoconf-3150100 subversion-1.8.16/sqlite-amalgamation && \
     cd subversion-1.8.16 && \
-    ./configure --prefix=/opt/svn-1.8 --without-berkeley-db --without-apxs --without-swig --with-ssl --with-apr=/opt/apr-1.3/ --with-apr-util=/opt/apr-1.3/ --with-serf=/opt/serf-1.3.9/ && \
+    ./configure --prefix=/opt/svn-1.8 --without-berkeley-db --without-apxs --without-swig --with-apr=/opt/apr-1.3/ --with-apr-util=/opt/apr-1.3/ --with-serf=/opt/serf-1.3.9/ && \
     nice make -j4 && \
     make install && \
     mv /opt/svn-1.8/bin/svn /opt/svn-1.8/bin/svn18 && \
